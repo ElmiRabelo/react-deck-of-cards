@@ -1,7 +1,9 @@
 import React from "react";
 import axios from "axios";
+import Card from "./Card";
 
 const API_BASE_URL = "https://deckofcardsapi.com/api/deck";
+
 class Deck extends React.Component {
   constructor(props) {
     super(props);
@@ -10,6 +12,7 @@ class Deck extends React.Component {
   }
 
   async componentDidMount() {
+    //fazendo request para api e coletando os dados
     let deckAPI = await axios.get(`${API_BASE_URL}/new/shuffle/`);
     this.setState({ deck: deckAPI.data });
   }
@@ -43,10 +46,14 @@ class Deck extends React.Component {
   }
 
   render() {
+    const renderCards = this.state.drawnCards.map(card => (
+      <Card image={card.image} name={card.name} key={card.id} />
+    ));
     return (
       <div className="Deck">
         <h1>Deck Dealer</h1>
         <button onClick={this.getCard}> Get a Card </button>
+        {renderCards}
       </div>
     );
   }
